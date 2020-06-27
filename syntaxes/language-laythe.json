@@ -1,0 +1,760 @@
+{
+  "version": "",
+  "name": "Laythe",
+  "scopeName": "source.ly",
+  "fileTypes": ["ly"],
+  "patterns": [
+    {
+      "include": "#top"
+    }
+  ],
+  "repository": {
+    "top": {
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#declaration"
+        },
+        {
+          "include": "#string"
+        }
+      ]
+    },
+    "declaration": {
+      "patterns": [
+        {
+          "include": "#class-declaration"
+        },
+        {
+          "include": "#fn-declaration"
+        },
+        {
+          "include": "#let-declaration"
+        },
+        {
+          "include": "#let-nil-declaration"
+        },
+        {
+          "include": "#statement"
+        }
+      ]
+    },
+    "class-declaration": {
+      "name": "meta.class.ly",
+      "begin": "(?:\\b(export)\\s+)?\\b(class)\\s+([_[:alpha:]][_[:alnum:]]*)\\s*(?:<\\s*([_[:alpha:]][_[:alnum:]]*)\\s*)?\\{",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.export.ly"
+        },
+        "2": {
+          "name": "storage.type.class.ly"
+        },
+        "3": {
+          "name": "meta.definition.class.ly entity.name.class.ly"
+        },
+        "4": {
+          "name": "meta.definition.class.ly entity.name.class.ly"
+        }
+      },
+      "end": "\\}",
+      "patterns": [
+        {
+          "include": "#method"
+        }
+      ]
+    },
+    "method": {
+      "name": "meta.method.ly",
+      "begin": "\\b[_[:alpha:]][_[:alnum:]]*",
+      "beginCaptures": {
+        "0": {
+          "name": "entity.name.function.ly"
+        }
+      },
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "include": "#parameters"
+        },
+        {
+          "include": "#block"
+        }
+      ]
+    },
+    "fn-declaration": {
+      "name": "meta.declaration.function.ly",
+      "begin": "(?:\\b(export)\\s+)?\\b(fn)\\s+([_[:alpha:]][_[:alnum:]]*)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.export.ly"
+        },
+        "2": {
+          "name": "storage.type.function.ly"
+        },
+        "3": {
+          "name": "meta.definition.function.ly entity.name.function.ly"
+        }
+      },
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "include": "#parameters"
+        },
+        {
+          "include": "#block"
+        }
+      ]
+    },
+    "let-declaration": {
+      "name": "meta.declaration.variable",
+      "begin": "(?:\\b(export)\\s+)?(let)\\s+([_[:alpha:]][_[:alnum:]]*)\\s+=\\s+",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.export.ly"
+        },
+        "2": {
+          "name": "keyword.declaration.variable.ly"
+        },
+        "3": {
+          "name": "entity.name.variable"
+        }
+      },
+      "end": ";",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.terminator.statement.ly"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "let-nil-declaration": {
+      "name": "meta.declaration.variable",
+      "match": "(?:\\b(export)\\s+)?(let)\\s+([_[:alpha:]][_[:alnum:]]*)\\s*;",
+      "captures": {
+        "1": {
+          "name": "keyword.control.export.ly"
+        },
+        "2": {
+          "name": "keyword.declaration.variable.ly"
+        },
+        "3": {
+          "name": "entity.name.variable"
+        },
+        "4": {
+          "name": "punctuation.terminator.statement.ly"
+        }
+      }
+    },
+    "statement": {
+      "patterns": [
+        {
+          "include": "#print"
+        },
+        {
+          "include": "#import"
+        },
+        {
+          "include": "#control-statement"
+        },
+        {
+          "include": "#block"
+        },
+        {
+          "include": "#expression"
+        },
+        {
+          "include": "#keywords"
+        },
+        {
+          "include": "#punctuation-semicolon"
+        }
+      ]
+    },
+    "print": {
+      "name": "meta.print.ly",
+      "begin": "\\b(print)\\s+",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.command.print.ly"
+        }
+      },
+      "end": "\\;",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.terminator.statement.ly"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "import": {
+      "begin": "\\bimport\\s+",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.import.ly"
+        }
+      },
+      "end": ";",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.terminator.statement.ly"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#from"
+        }
+      ]
+    },
+    "from": {
+      "name": "keyword.control.import.ly",
+      "match": "(?<![_[:alnum:]\\:])(from)(?![_[:alnum:]\\:])"
+    },
+    "control-statement": {
+      "patterns": [
+        {
+          "include": "#for"
+        },
+        {
+          "include": "#while"
+        },
+        {
+          "include": "#if"
+        },
+        {
+          "include": "#else"
+        },
+        {
+          "include": "#try"
+        },
+        {
+          "include": "#catch"
+        },
+        {
+          "include": "#return"
+        }
+      ]
+    },
+    "for": {
+      "name": "meta.loop.for.ly",
+      "begin": "\\bfor\\s*",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.loop.ly"
+        }
+      },
+      "end": "(?<=(\\}|;))",
+      "patterns": [
+        {
+          "include": "#for-range"
+        },
+        {
+          "include": "#for-c"
+        },
+        {
+          "include": "#block"
+        },
+        {
+          "include": "#statement"
+        }
+      ]
+    },
+    "for-range": {
+      "name": "meta.loop.for.range.ly",
+      "begin": "\\(\\s*(let)\\s+([_[:alpha:]][_[:alnum:]]*)\\s+(in)\\s+",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.declaration.variable.ly"
+        },
+        "2": {
+          "name": "entity.name.variable"
+        },
+        "3": {
+          "name": "keyword.control.loop.ly"
+        }
+      },
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "for-c": {
+      "name": "meta.loop.for.cstyle.ly",
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#let-declaration"
+        },
+        {
+          "include": "#let-nil-declaration"
+        },
+        {
+          "include": "#expression"
+        },
+        {
+          "include": "#punctuation-semicolon"
+        }
+      ]
+    },
+    "while": {
+      "name": "meta.loop.while.ly",
+      "begin": "\\bwhile\\s*",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.loop.ly"
+        }
+      },
+      "end": "(?<=(\\}|;))",
+      "patterns": [
+        {
+          "include": "#condition"
+        },
+        {
+          "include": "#statement"
+        }
+      ]
+    },
+    "if": {
+      "name": "meta.condition.if.ly",
+      "begin": "\\bif\\s*",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.condition.if.ly"
+        }
+      },
+      "end": "(?<=(\\}|;))",
+      "patterns": [
+        {
+          "include": "#condition"
+        },
+        {
+          "include": "#statement"
+        }
+      ]
+    },
+    "else": {
+      "name": "meta.condition.else.ly",
+      "begin": "\\belse\\s*",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.condition.else.ly"
+        }
+      },
+      "end": "(?<=(\\}|;))",
+      "patterns": [
+        {
+          "include": "#statement"
+        }
+      ]
+    },
+    "try": {
+      "name": "meta.condition.try.ly",
+      "begin": "\\btry\\s*",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.condition.try.ly"
+        }
+      },
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "include": "#block"
+        }
+      ]
+    },
+    "catch": {
+      "name": "meta.condition.catch.ly",
+      "begin": "\\bcatch\\s*",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.condition.catch.ly"
+        }
+      },
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "include": "#block"
+        }
+      ]
+    },
+    "return": {
+      "name": "meta.return.ly",
+      "begin": "(?<![_[:alnum:]\\:])(return)\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.return.ly"
+        }
+      },
+      "end": ";",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.terminator.statement.ly"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "block": {
+      "name": "meta.block.ly",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.block.ly"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.block.ly"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#declaration"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.conditional.ly",
+          "match": "(?<![_[:alnum:]\\:])(else|if)(?![_[:alnum:]\\:])"
+        },
+        {
+          "name": "keyword.control.loop.ly",
+          "match": "(?<![_[:alnum:]\\:])(for|in|while)(?![_[:alnum:]\\:])"
+        },
+        {
+          "name": "keyword.control.exception.ly",
+          "match": "(?<![_[:alnum:]\\:])(try|catch)(?![_[:alnum:]\\:])"
+        }
+      ]
+    },
+    "condition": {
+      "name": "meta.condition.ly",
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "expression": {
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#expression-operators"
+        },
+        {
+          "include": "#chain"
+        },
+        {
+          "include": "#white-space"
+        }
+      ]
+    },
+    "expression-operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.logical.ly",
+          "match": "\\b(or|and)\\b"
+        },
+        {
+          "name": "keyword.operator.assignment.ly",
+          "match": "="
+        },
+        {
+          "name": "keyword.operator.comparison.ly",
+          "match": "<=|>=|<|>|!=|=="
+        },
+        {
+          "name": "keyword.operator.arithmetic.ly",
+          "match": "\\*|/|-|\\+"
+        }
+      ]
+    },
+    "chain": {
+      "patterns": [
+        {
+          "include": "#call"
+        },
+        {
+          "include": "#primary"
+        },
+        {
+          "include": "#identifier-accessor"
+        }
+      ]
+    },
+    "call": {
+      "name": "meta.call.ly",
+      "begin": "(\\.)?([_[:alpha:]][_[:alnum:]]*)\\s*\\(",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.accessor.get.ly"
+        },
+        "2": {
+          "name": "entity.name.function.ly"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "1": {
+          "name": "meta.brace.round.ly"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression-list"
+        }
+      ]
+    },
+    "primary": {
+      "patterns": [
+        {
+          "include": "#literal"
+        },
+        {
+          "include": "#identifier"
+        },
+        {
+          "include": "#lambda-block"
+        },
+        {
+          "include": "#grouping"
+        }
+      ]
+    },
+    "parameters": {
+      "name": "meta.declaration.parameters",
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#expression-list"
+        }
+      ]
+    },
+    "arguments": {
+      "name": "meta.arguments",
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#expression-list"
+        }
+      ]
+    },
+    "expression-list": {
+      "patterns": [
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "literal": {
+      "patterns": [
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#true"
+        },
+        {
+          "include": "#false"
+        },
+        {
+          "include": "#nil"
+        },
+        {
+          "include": "#this"
+        },
+        {
+          "include": "#super"
+        },
+        {
+          "include": "#number"
+        }
+      ]
+    },
+    "identifier-accessor": {
+      "name": "variable.other.accessor.ly",
+      "match": "(\\.)([_[:alpha:]][_[:alnum:]]*)",
+      "captures": {
+        "1": {
+          "name": "punctuation.accessor.get.ly"
+        },
+        "2": {
+          "name": "variable.other.member"
+        }
+      }
+    },
+    "identifier": {
+      "name": "variable.other.identifier.ly",
+      "match": "\\b([_[:alpha:]][_[:alnum:]]*)"
+    },
+    "grouping": {
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "lambda": {
+      "name": "meta.declaration.lambda.ly",
+      "begin": "\\|",
+      "end": "(?<=(;|,|\\]))",
+      "patterns": [
+        {
+          "include": "#punctuation-pipe"
+        },
+        {
+          "include": "#expression-list"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "lambda-block": {
+      "name": "meta.declaration.lambda.ly",
+      "begin": "\\|",
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "include": "#punctuation-pipe"
+        },
+        {
+          "include": "#expression-list"
+        },
+        {
+          "include": "#block"
+        }
+      ]
+    },
+    "string": {
+      "patterns": [
+        {
+          "include": "#string-single"
+        },
+        {
+          "include": "#string-double"
+        }
+      ]
+    },
+    "string-single": {
+      "name": "string.ly",
+      "begin": "'",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.ly"
+        }
+      },
+      "end": "'",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.ly"
+        }
+      }
+    },
+    "string-double": {
+      "name": "string.ly",
+      "begin": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.ly"
+        }
+      },
+      "end": "\"",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.ly"
+        }
+      }
+    },
+    "comment": {
+      "name": "comment.line.double-slash.ly",
+      "begin": "(^[ \\t]+)?(//)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.whitespace.comment.leading.ly"
+        },
+        "2": {
+          "name": "comment.line.double-slash.ly"
+        }
+      },
+      "contentName": "comment.line.comment.ly",
+      "end": "\\n"
+    },
+    "number": {
+      "name": "constant.numeric.float.ly",
+      "match": "-?(?:0|[1-9](?:[0-9_]*[0-9])?)(?:\\.[0-9](?:[0-9_]*[0-9])?)?(?:[eE][+\\-]?[0-9](?:[0-9_]*[0-9])?)?"
+    },
+    "this": {
+      "name": "variable.language.this.ly",
+      "match": "\\bthis(?![_[:alnum:]\\:])"
+    },
+    "super": {
+      "name": "variable.language.super.ly",
+      "match": "\\bsuper(?![_[:alnum:]\\:])"
+    },
+    "true": {
+      "name": "constant.language.true.ly",
+      "match": "\\btrue(?![_[:alnum:]\\:])"
+    },
+    "false": {
+      "name": "constant.language.false.ly",
+      "match": "\\bfalse(?![_[:alnum:]\\:])"
+    },
+    "nil": {
+      "name": "constant.language.nil.ly",
+      "match": "\\bnil(?![_[:alnum:]\\:])"
+    },
+    "white-space": {
+      "name": "punctuation.separator.whitespace.ly",
+      "match": "\\s"
+    },
+    "punctuation-pipe": {
+      "name": "punctuation.lambda.pipe.ly",
+      "match": "\\|"
+    },
+    "punctuation-comma": {
+      "name": "punctuation.separator.comma.ly",
+      "match": "\\,"
+    },
+    "punctuation-period": {
+      "name": "punctuation.accessor.period.ly",
+      "match": "\\,"
+    },
+    "punctuation-semicolon": {
+      "name": "punctuation.terminator.statement.ly",
+      "match": "\\;"
+    }
+  }
+}
