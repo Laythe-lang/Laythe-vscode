@@ -2,15 +2,22 @@
   "name": "laythe",
   "displayName": "Laythe",
   "description": "Laythe language extension for vscode",
+  "author": "John Chabot",
+  "publisher": "JohnChabot",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Laythe-lang/Laythe-vscode"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.46.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages"
   ],
   "activationEvents": [
-    "onCommand:laythe.helloWorld"
+    "onLanguage:ly"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -19,8 +26,8 @@
         "id": "laythe",
         "extensions": [
           ".ly"
-				],
-				"configuration": "./laythe.configuration.json"
+        ],
+        "configuration": "./laythe.configuration.json"
       }
     ],
     "grammars": [
