@@ -591,7 +591,7 @@
           "include": "#nil"
         },
         {
-          "include": "#this"
+          "include": "#self"
         },
         {
           "include": "#super"
@@ -716,9 +716,9 @@
       "name": "constant.numeric.float.ly",
       "match": "-?(?:0|[1-9](?:[0-9_]*[0-9])?)(?:\\.[0-9](?:[0-9_]*[0-9])?)?(?:[eE][+\\-]?[0-9](?:[0-9_]*[0-9])?)?"
     },
-    "this": {
-      "name": "variable.language.this.ly",
-      "match": "\\bthis(?![_[:alnum:]\\:])"
+    "self": {
+      "name": "variable.language.self.ly",
+      "match": "\\bself(?![_[:alnum:]\\:])"
     },
     "super": {
       "name": "variable.language.super.ly",
