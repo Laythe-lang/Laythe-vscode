@@ -67,9 +67,12 @@
     },
     "method": {
       "name": "meta.method.ly",
-      "begin": "\\b[_[:alpha:]][_[:alnum:]]*",
+      "begin": "\\b(?:(static)\\s+)?([_[:alpha:]][_[:alnum:]]*)",
       "beginCaptures": {
-        "0": {
+        "1": {
+          "name": "storage.modifier.static.ly"
+        },
+        "2": {
           "name": "entity.name.function.ly"
         }
       },
