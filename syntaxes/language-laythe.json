@@ -1,8 +1,8 @@
 {
   "version": "",
   "name": "Laythe",
-  "scopeName": "source.ly",
-  "fileTypes": ["ly"],
+  "scopeName": "source.lay",
+  "fileTypes": ["lay"],
   "patterns": [
     {
       "include": "#top"

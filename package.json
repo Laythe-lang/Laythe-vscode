@@ -5,19 +5,33 @@
   "author": "John Chabot",
   "publisher": "JohnChabot",
   "license": "MIT",
+  "icon": "images/laythe_icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/Laythe-lang/Laythe-vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/Laythe-lang/Laythe-vscode/issues"
+  },
+  "galleryBanner": {
+    "color": "#004d99",
+    "theme": "dark"
   },
   "version": "0.0.6",
   "engines": {
     "vscode": "^1.46.0"
   },
+  "keywords": [
+    "Programming language",
+    "Laythe",
+    "language-server",
+    "dynamic"
+  ],
   "categories": [
     "Programming Languages"
   ],
   "activationEvents": [
-    "onLanguage:ly"
+    "onLanguage:lay"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -25,7 +39,7 @@
       {
         "id": "laythe",
         "extensions": [
-          ".ly"
+          ".lay"
         ],
         "configuration": "./laythe.configuration.json"
       }
@@ -33,11 +47,12 @@
     "grammars": [
       {
         "language": "laythe",
-        "scopeName": "source.ly",
+        "scopeName": "source.lay",
         "path": "./syntaxes/language-laythe.json"
       }
     ]
   },
+  "homepage": "https://github.com/Laythe-lang/Laythe#readme",
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
