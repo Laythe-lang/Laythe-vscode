@@ -160,9 +160,6 @@
     "statement": {
       "patterns": [
         {
-          "include": "#print"
-        },
-        {
           "include": "#import"
         },
         {
@@ -179,26 +176,6 @@
         },
         {
           "include": "#punctuation-semicolon"
-        }
-      ]
-    },
-    "print": {
-      "name": "meta.print.ly",
-      "begin": "\\b(print)\\s+",
-      "beginCaptures": {
-        "1": {
-          "name": "keyword.command.print.ly"
-        }
-      },
-      "end": "\\;",
-      "endCaptures": {
-        "1": {
-          "name": "punctuation.terminator.statement.ly"
-        }
-      },
-      "patterns": [
-        {
-          "include": "#expression"
         }
       ]
     },
@@ -476,6 +453,9 @@
           "include": "#chain"
         },
         {
+          "include": "#block"
+        },
+        {
           "include": "#white-space"
         }
       ]
@@ -545,7 +525,7 @@
           "include": "#identifier"
         },
         {
-          "include": "#lambda-block"
+          "include": "#lambda"
         },
         {
           "include": "#grouping"
@@ -635,32 +615,13 @@
     "lambda": {
       "name": "meta.declaration.lambda.ly",
       "begin": "\\|",
-      "end": "(?<=(;|,|\\]))",
+      "end": "\\|",
       "patterns": [
         {
           "include": "#punctuation-pipe"
         },
         {
           "include": "#expression-list"
-        },
-        {
-          "include": "#expression"
-        }
-      ]
-    },
-    "lambda-block": {
-      "name": "meta.declaration.lambda.ly",
-      "begin": "\\|",
-      "end": "(?<=\\})",
-      "patterns": [
-        {
-          "include": "#punctuation-pipe"
-        },
-        {
-          "include": "#expression-list"
-        },
-        {
-          "include": "#block"
         }
       ]
     },
@@ -687,7 +648,15 @@
         "0": {
           "name": "punctuation.definition.string.end.ly"
         }
-      }
+      },
+      "patterns": [
+        {
+          "include": "#escape-unicode"
+        },
+        {
+          "include": "#escape-sequence"
+        }
+      ]
     },
     "string-double": {
       "name": "string.ly",
@@ -701,6 +670,30 @@
       "endCaptures": {
         "0": {
           "name": "punctuation.definition.string.end.ly"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#escape-unicode"
+        },
+        {
+          "include": "#escape-sequence"
+        }
+      ]
+    },
+    "escape-sequence": {
+      "name": "constant.character.escape",
+      "match": "\\\\."
+    },
+    "escape-unicode": {
+      "name": "constant.character.escape",
+      "match": "(\\\\u)\\{([0-9a-fA-F]{2,6})\\}",
+      "captures": {
+        "1": {
+          "name": "constant.character.escape"
+        },
+        "2": {
+          "name": "constant.numeric.integer.hexadecimal"
         }
       }
     },
