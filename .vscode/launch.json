@@ -4,6 +4,21 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    
+    {
+      "type": "extensionHost",
+      "request": "launch",
+      "name": "Launch VSCode Client",
+      "runtimeExecutable": "${execPath}",
+      "env": {
+        "NODE_ENV": "dev"
+      },
+      "args": [
+        "--extensionDevelopmentPath=${workspaceRoot}",
+      ],
+      "stopOnEntry": false,
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/clients/vscode/out/**/*.js"],
+      "preLaunchTask": "npm: compile"
+    },
   ]
 }
