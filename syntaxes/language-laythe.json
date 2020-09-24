@@ -360,6 +360,12 @@
         },
         {
           "include": "#return"
+        },
+        {
+          "include": "#break"
+        },
+        {
+          "include": "#continue"
         }
       ]
     },
@@ -491,6 +497,24 @@
         }
       ]
     },
+    "break": {
+      "name": "meta.break.lay",
+      "match": "(?<![_[:alnum:]\\:])break",
+      "captures": {
+        "0": {
+          "name": "keyword.control.break.lay"
+        }
+      }
+    },
+    "continue": {
+      "name": "meta.continue.lay",
+      "match": "(?<![_[:alnum:]\\:])continue",
+      "captures": {
+        "0": {
+          "name": "keyword.control.continue.lay"
+        }
+      }
+    },
     "block": {
       "name": "meta.block.lay",
       "begin": "\\{",
@@ -519,7 +543,7 @@
         },
         {
           "name": "keyword.control.loop.lay",
-          "match": "(?<![_[:alnum:]\\:])(for|in|while)(?![_[:alnum:]\\:])"
+          "match": "(?<![_[:alnum:]\\:])(for|in|while|continue|break)(?![_[:alnum:]\\:])"
         },
         {
           "name": "keyword.control.exception.lay",
