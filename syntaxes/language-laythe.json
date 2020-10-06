@@ -573,7 +573,7 @@
     "expression-operators": {
       "patterns": [
         {
-          "name": "keyword.operator.word.lay",
+          "name": "keyword.other.logical.lay",
           "match": "\\b(or|and)\\b"
         },
         {
