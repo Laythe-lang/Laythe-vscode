@@ -257,6 +257,9 @@
       "patterns": [
         {
           "include": "#type-member"
+        },
+        {
+          "include": "#type-method"
         }
       ]
     },
@@ -581,6 +584,10 @@
           "match": "="
         },
         {
+          "name": "keyword.operator.assignment.arithmetic.lay",
+          "match": "\\*=|/=|-=|\\+="
+        },
+        {
           "name": "keyword.operator.comparison.lay",
           "match": "<=|>=|<|>|!=|=="
         },
@@ -593,6 +600,9 @@
     "chain": {
       "patterns": [
         {
+          "include": "#init"
+        },
+        {
           "include": "#call"
         },
         {
@@ -600,6 +610,26 @@
         },
         {
           "include": "#identifier-accessor"
+        }
+      ]
+    },
+    "init": {
+      "name": "meta.init.lay",
+      "begin": "([_[:upper:]][_[:alnum:]]*)\\s*\\(",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.type.lay"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "1": {
+          "name": "meta.brace.round.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression-list"
         }
       ]
     },
@@ -684,7 +714,7 @@
           "name": "punctuation.separator.colon.lay"
         }
       },
-      "end": "(?=(,|\\)))",
+      "end": "(?=(,|\\)|\\|))",
       "patterns": [
         {
           "include": "#type"
@@ -818,6 +848,9 @@
         },
         {
           "include": "#escape-sequence"
+        },
+        {
+          "include": "#template-expression"
         }
       ]
     },
@@ -841,6 +874,29 @@
         },
         {
           "include": "#escape-sequence"
+        },
+        {
+          "include": "#template-expression"
+        }
+      ]
+    },
+    "template-expression": {
+      "name": "meta.template.expression.lay",
+      "begin": "\\$\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.template-expression.begin.lay"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.template-expression.begin.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
         }
       ]
     },
@@ -911,7 +967,7 @@
       "match": "\\,"
     },
     "punctuation-arrow": {
-      "name": "punctuation.separator.arrow.lay",
+      "name": "storage.type.function.arrow.lay",
       "match": "->"
     },
     "punctuation-period": {
@@ -942,6 +998,30 @@
       },
       "end": ";",
       "patterns": [
+        {
+          "include": "#type"
+        }
+      ]
+    },
+
+    "type-method": {
+      "begin": "\\b([_[:alpha:]][_[:alnum:]]*)\\s*(?=(<|\\())",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.lay"
+        }
+      },
+      "end": ";",
+      "patterns": [
+        {
+          "include": "#type-parameters"
+        },
+        {
+          "include": "#call-signature"
+        },
+        {
+          "include": "#punctuation-arrow"
+        },
         {
           "include": "#type"
         }
@@ -1029,54 +1109,22 @@
           "include": "#type-operators"
         },
         {
+          "include": "#punctuation-arrow"
+        },
+        {
           "include": "#type-arguments"
         },
         {
-          "include": "#type-predefined"
+          "include": "#call-signature"
         },
         {
-          "include": "#type-call-signature"
+          "include": "#type-predefined"
         },
         {
           "include": "#type-ref"
         },
         {
           "include": "#white-space"
-        }
-      ]
-    },
-    "type-call-signature": {
-      "name": "meta.declaration.callSignature.lay",
-      "begin": "\\(",
-      "beginCaptures": {
-        "0": "punctuation.section.parens.begin.lay"
-      },
-      "end": "(?=(;|=))",
-      "endCaptures": {
-        "0": "punctuation.section.parens.end.lay"
-      },
-      "patterns": [
-        {
-          "include": "#white-space"
-        },
-        {
-          "name": "punctuation.section.parens.end.lay",
-          "match": "\\)"
-        },
-        {
-          "include": "#punctuation-comma"
-        },
-        {
-          "include": "#punctuation-arrow"
-        },
-        {
-          "include": "#parameter-typed"
-        },
-        {
-          "include": "#parameter"
-        },
-        {
-          "include": "#type"
         }
       ]
     },
