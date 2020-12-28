@@ -37,91 +37,145 @@
           "include": "#let-nil-declaration"
         },
         {
+          "include": "#trait-declaration"
+        },
+        {
+          "include": "#type-declaration"
+        },
+        {
           "include": "#statement"
         }
       ]
     },
     "class-declaration": {
-      "name": "meta.class.ly",
-      "begin": "(?:\\b(export)\\s+)?\\b(class)\\s+([_[:alpha:]][_[:alnum:]]*)\\s*(?:<\\s*([_[:alpha:]][_[:alnum:]]*)\\s*)?\\{",
+      "name": "meta.class.lay",
+      "begin": "(?:\\b(export)\\s+)?\\b(class)\\s+([_[:alpha:]][_[:alnum:]]*)\\s*",
       "beginCaptures": {
         "1": {
-          "name": "keyword.control.export.ly"
+          "name": "keyword.control.export.lay"
         },
         "2": {
-          "name": "storage.type.class.ly"
+          "name": "storage.type.class.lay"
         },
         "3": {
-          "name": "meta.definition.class.ly entity.name.class.ly"
+          "name": "meta.definition.class.lay entity.name.class.lay"
         },
         "4": {
-          "name": "meta.definition.class.ly entity.name.class.ly"
+          "name": "meta.definition.class.lay entity.name.class.lay"
         }
       },
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#type-parameters"
+        },
+        {
+          "include": "#punctuation-colon"
+        },
+        {
+          "include": "#type"
+        },
+        {
+          "include": "#class-body"
+        }
+      ]
+    },
+    "class-body": {
+      "begin": "\\{",
       "end": "\\}",
       "patterns": [
         {
           "include": "#comment"
         },
         {
+          "include": "#type-member"
+        },
+        {
           "include": "#method"
+        },
+        {
+          "include": "#punctuation-arrow"
+        },
+        {
+          "include": "#type"
         }
       ]
     },
     "method": {
-      "name": "meta.method.ly",
-      "begin": "\\b(?:(static)\\s+)?([_[:alpha:]][_[:alnum:]]*)",
+      "name": "meta.method.lay",
+      "begin": "\\b(?:(static)\\s+)?([_[:alpha:]][_[:alnum:]]*)\\s*(?=(\\(|<))",
       "beginCaptures": {
         "1": {
-          "name": "storage.modifier.static.ly"
+          "name": "storage.modifier.static.lay"
         },
         "2": {
-          "name": "entity.name.function.ly"
+          "name": "entity.name.function.lay"
         }
       },
-      "end": "(?<=\\})",
+      "end": "(?<=(;|\\}))",
       "patterns": [
         {
-          "include": "#parameters"
+          "include": "#type-parameters"
+        },
+        {
+          "include": "#call-signature"
         },
         {
           "include": "#block"
+        },
+        {
+          "include": "#punctuation-arrow"
+        },
+        {
+          "include": "#type"
         }
       ]
     },
     "fn-declaration": {
-      "name": "meta.declaration.function.ly",
-      "begin": "(?:\\b(export)\\s+)?\\b(fn)\\s+([_[:alpha:]][_[:alnum:]]*)",
+      "name": "meta.declaration.function.lay",
+      "begin": "(?:\\b(export)\\s+)?\\b(fn)\\s+([_[:alpha:]][_[:alnum:]]*)\\s*(?=(\\(|<))",
       "beginCaptures": {
         "1": {
-          "name": "keyword.control.export.ly"
+          "name": "keyword.control.export.lay"
         },
         "2": {
-          "name": "storage.type.function.ly"
+          "name": "storage.type.function.lay"
         },
         "3": {
-          "name": "meta.definition.function.ly entity.name.function.ly"
+          "name": "meta.definition.function.lay entity.name.function.lay"
         }
       },
-      "end": "(?<=\\})",
+      "end": "(?<=(;|\\}))",
       "patterns": [
         {
-          "include": "#parameters"
+          "include": "#type-parameters"
+        },
+        {
+          "include": "#call-signature"
         },
         {
           "include": "#block"
+        },
+        {
+          "include": "#punctuation-arrow"
+        },
+        {
+          "include": "#type"
         }
       ]
     },
     "let-declaration": {
-      "name": "meta.declaration.variable",
-      "begin": "(?:\\b(export)\\s+)?(let)\\s+([_[:alpha:]][_[:alnum:]]*)\\s+=\\s+",
+      "name": "meta.declaration.variable.lay",
+      "begin": "(?:\\b(export)\\s+)?(let)\\s+([_[:alpha:]][_[:alnum:]]*)",
       "beginCaptures": {
         "1": {
-          "name": "keyword.control.export.ly"
+          "name": "keyword.control.export.lay"
         },
         "2": {
-          "name": "keyword.declaration.variable.ly"
+          "name": "keyword.declaration.variable.lay"
         },
         "3": {
           "name": "entity.name.variable"
@@ -130,32 +184,114 @@
       "end": ";",
       "endCaptures": {
         "1": {
-          "name": "punctuation.terminator.statement.ly"
+          "name": "punctuation.terminator.statement.lay"
         }
       },
       "patterns": [
+        {
+          "include": "#white-space"
+        },
+        {
+          "include": "#punctuation-assignment"
+        },
+        {
+          "include": "#let-type-declaration"
+        },
         {
           "include": "#expression"
         }
       ]
     },
-    "let-nil-declaration": {
-      "name": "meta.declaration.variable",
-      "match": "(?:\\b(export)\\s+)?(let)\\s+([_[:alpha:]][_[:alnum:]]*)\\s*;",
-      "captures": {
+    "let-type-declaration": {
+      "name": "meta.declaration.variable.type.lay",
+      "begin": ":",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.separator.colon.lay"
+        }
+      },
+      "end": "(=|;)",
+      "patterns": [
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "trait-declaration": {
+      "name": "meta.declaration.trait",
+      "begin": "(?:\\b(export)\\s+)?(trait)\\s+([_[:alpha:]][_[:alnum:]]*)",
+      "beginCaptures": {
         "1": {
-          "name": "keyword.control.export.ly"
+          "name": "keyword.control.export.lay"
         },
         "2": {
-          "name": "keyword.declaration.variable.ly"
+          "name": "keyword.declaration.trait.lay"
         },
         "3": {
-          "name": "entity.name.variable"
-        },
-        "4": {
-          "name": "punctuation.terminator.statement.ly"
+          "name": "entity.name.type.interface.lay"
         }
-      }
+      },
+      "end": "(?<=\\})",
+      "patterns": [
+        {
+          "include": "#trait-body"
+        },
+        {
+          "include": "#type-parameters"
+        }
+      ]
+    },
+    "trait-body": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.block.begin.lay"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.block.end.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#type-member"
+        },
+        {
+          "include": "#type-method"
+        }
+      ]
+    },
+    "type-declaration": {
+      "name": "meta.declaration.type",
+      "begin": "(?:\\b(export)\\s+)?(type)\\s+([_[:alpha:]][_[:alnum:]]*)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.export.lay"
+        },
+        "2": {
+          "name": "keyword.declaration.type.lay"
+        },
+        "3": {
+          "name": "entity.name.type"
+        }
+      },
+      "end": ";",
+      "patterns": [
+        {
+          "include": "#type-parameters"
+        },
+        {
+          "include": "#type"
+        },
+        {
+          "include": "#punctuation-assignment"
+        },
+        {
+          "include": "#white-space"
+        }
+      ]
     },
     "statement": {
       "patterns": [
@@ -183,13 +319,13 @@
       "begin": "\\bimport\\s+",
       "beginCaptures": {
         "0": {
-          "name": "keyword.control.import.ly"
+          "name": "keyword.control.import.lay"
         }
       },
       "end": ";",
       "endCaptures": {
         "1": {
-          "name": "punctuation.terminator.statement.ly"
+          "name": "punctuation.terminator.statement.lay"
         }
       },
       "patterns": [
@@ -202,7 +338,7 @@
       ]
     },
     "from": {
-      "name": "keyword.control.import.ly",
+      "name": "keyword.control.import.lay",
       "match": "(?<![_[:alnum:]\\:])(from)(?![_[:alnum:]\\:])"
     },
     "control-statement": {
@@ -227,130 +363,99 @@
         },
         {
           "include": "#return"
+        },
+        {
+          "include": "#break"
+        },
+        {
+          "include": "#continue"
         }
       ]
     },
     "for": {
-      "name": "meta.loop.for.ly",
-      "begin": "\\bfor\\s*",
-      "beginCaptures": {
-        "0": {
-          "name": "keyword.control.loop.ly"
-        }
-      },
-      "end": "(?<=(\\}|;))",
-      "patterns": [
-        {
-          "include": "#for-range"
-        },
-        {
-          "include": "#for-c"
-        },
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#statement"
-        }
-      ]
-    },
-    "for-range": {
-      "name": "meta.loop.for.range.ly",
-      "begin": "\\(\\s*(let)\\s+([_[:alpha:]][_[:alnum:]]*)\\s+(in)\\s+",
+      "name": "meta.loop.for.lay",
+      "begin": "\\b(for)\\s+([_[:alpha:]][_[:alnum:]]*)\\s+(in)\\s+",
       "beginCaptures": {
         "1": {
-          "name": "keyword.declaration.variable.ly"
+          "name": "keyword.control.loop.lay"
         },
         "2": {
           "name": "entity.name.variable"
         },
         "3": {
-          "name": "keyword.control.loop.ly"
+          "name": "keyword.control.loop.lay"
         }
       },
-      "end": "\\)",
+      "end": "(?<=\\})",
       "patterns": [
         {
           "include": "#expression"
-        }
-      ]
-    },
-    "for-c": {
-      "name": "meta.loop.for.cstyle.ly",
-      "begin": "\\(",
-      "end": "\\)",
-      "patterns": [
-        {
-          "include": "#let-declaration"
         },
         {
-          "include": "#let-nil-declaration"
-        },
-        {
-          "include": "#expression"
-        },
-        {
-          "include": "#punctuation-semicolon"
+          "include": "#block"
         }
       ]
     },
     "while": {
-      "name": "meta.loop.while.ly",
+      "name": "meta.loop.while.lay",
       "begin": "\\bwhile\\s*",
       "beginCaptures": {
         "0": {
-          "name": "keyword.control.loop.ly"
+          "name": "keyword.control.loop.lay"
         }
       },
-      "end": "(?<=(\\}|;))",
+      "end": "(?<=\\})",
       "patterns": [
         {
-          "include": "#condition"
+          "include": "#expression"
         },
         {
-          "include": "#statement"
+          "include": "#block"
         }
       ]
     },
     "if": {
-      "name": "meta.condition.if.ly",
+      "name": "meta.condition.if.lay",
       "begin": "\\bif\\s*",
       "beginCaptures": {
         "0": {
-          "name": "keyword.control.condition.if.ly"
+          "name": "keyword.control.condition.if.lay"
         }
       },
-      "end": "(?<=(\\}|;))",
+      "end": "(?<=\\})",
       "patterns": [
         {
-          "include": "#condition"
+          "include": "#expression"
         },
         {
-          "include": "#statement"
+          "include": "#block"
         }
       ]
     },
     "else": {
-      "name": "meta.condition.else.ly",
+      "name": "meta.condition.else.lay",
       "begin": "\\belse\\s*",
       "beginCaptures": {
         "0": {
-          "name": "keyword.control.condition.else.ly"
+          "name": "keyword.control.condition.else.lay"
         }
       },
-      "end": "(?<=(\\}|;))",
+      "end": "(?<=\\})",
       "patterns": [
         {
-          "include": "#statement"
+          "include": "#if"
+        },
+        {
+          "include": "#block"
         }
       ]
     },
     "try": {
-      "name": "meta.condition.try.ly",
+      "name": "meta.condition.try.lay",
       "begin": "\\btry\\s*",
       "beginCaptures": {
         "0": {
-          "name": "keyword.control.condition.try.ly"
+          "name": "keyword.control.condition.try.lay"
         }
       },
       "end": "(?<=\\})",
@@ -361,11 +466,11 @@
       ]
     },
     "catch": {
-      "name": "meta.condition.catch.ly",
+      "name": "meta.condition.catch.lay",
       "begin": "\\bcatch\\s*",
       "beginCaptures": {
         "0": {
-          "name": "keyword.control.condition.catch.ly"
+          "name": "keyword.control.condition.catch.lay"
         }
       },
       "end": "(?<=\\})",
@@ -376,17 +481,17 @@
       ]
     },
     "return": {
-      "name": "meta.return.ly",
+      "name": "meta.return.lay",
       "begin": "(?<![_[:alnum:]\\:])(return)\\s*",
       "beginCaptures": {
         "1": {
-          "name": "keyword.control.return.ly"
+          "name": "keyword.control.return.lay"
         }
       },
       "end": ";",
       "endCaptures": {
         "1": {
-          "name": "punctuation.terminator.statement.ly"
+          "name": "punctuation.terminator.statement.lay"
         }
       },
       "patterns": [
@@ -395,18 +500,36 @@
         }
       ]
     },
+    "break": {
+      "name": "meta.break.lay",
+      "match": "(?<![_[:alnum:]\\:])break",
+      "captures": {
+        "0": {
+          "name": "keyword.control.break.lay"
+        }
+      }
+    },
+    "continue": {
+      "name": "meta.continue.lay",
+      "match": "(?<![_[:alnum:]\\:])continue",
+      "captures": {
+        "0": {
+          "name": "keyword.control.continue.lay"
+        }
+      }
+    },
     "block": {
-      "name": "meta.block.ly",
+      "name": "meta.block.lay",
       "begin": "\\{",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.definition.block.ly"
+          "name": "punctuation.section.block.begin.lay"
         }
       },
       "end": "\\}",
       "endCaptures": {
         "0": {
-          "name": "punctuation.definition.block.ly"
+          "name": "punctuation.section.block.end.lay"
         }
       },
       "patterns": [
@@ -418,26 +541,16 @@
     "keywords": {
       "patterns": [
         {
-          "name": "keyword.control.conditional.ly",
+          "name": "keyword.control.conditional.lay",
           "match": "(?<![_[:alnum:]\\:])(else|if)(?![_[:alnum:]\\:])"
         },
         {
-          "name": "keyword.control.loop.ly",
-          "match": "(?<![_[:alnum:]\\:])(for|in|while)(?![_[:alnum:]\\:])"
+          "name": "keyword.control.loop.lay",
+          "match": "(?<![_[:alnum:]\\:])(for|in|while|continue|break)(?![_[:alnum:]\\:])"
         },
         {
-          "name": "keyword.control.exception.ly",
+          "name": "keyword.control.exception.lay",
           "match": "(?<![_[:alnum:]\\:])(try|catch)(?![_[:alnum:]\\:])"
-        }
-      ]
-    },
-    "condition": {
-      "name": "meta.condition.ly",
-      "begin": "\\(",
-      "end": "\\)",
-      "patterns": [
-        {
-          "include": "#expression"
         }
       ]
     },
@@ -463,25 +576,32 @@
     "expression-operators": {
       "patterns": [
         {
-          "name": "keyword.operator.logical.ly",
+          "name": "keyword.other.logical.lay",
           "match": "\\b(or|and)\\b"
         },
         {
-          "name": "keyword.operator.assignment.ly",
+          "name": "keyword.operator.assignment.lay",
           "match": "="
         },
         {
-          "name": "keyword.operator.comparison.ly",
+          "name": "keyword.operator.assignment.arithmetic.lay",
+          "match": "\\*=|/=|-=|\\+="
+        },
+        {
+          "name": "keyword.operator.comparison.lay",
           "match": "<=|>=|<|>|!=|=="
         },
         {
-          "name": "keyword.operator.arithmetic.ly",
+          "name": "keyword.operator.arithmetic.lay",
           "match": "\\*|/|-|\\+"
         }
       ]
     },
     "chain": {
       "patterns": [
+        {
+          "include": "#init"
+        },
         {
           "include": "#call"
         },
@@ -493,21 +613,41 @@
         }
       ]
     },
-    "call": {
-      "name": "meta.call.ly",
-      "begin": "(\\.)?([_[:alpha:]][_[:alnum:]]*)\\s*\\(",
+    "init": {
+      "name": "meta.init.lay",
+      "begin": "([_[:upper:]][_[:alnum:]]*)\\s*\\(",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.accessor.get.ly"
-        },
-        "2": {
-          "name": "entity.name.function.ly"
+          "name": "entity.name.type.lay"
         }
       },
       "end": "\\)",
       "endCaptures": {
         "1": {
-          "name": "meta.brace.round.ly"
+          "name": "meta.brace.round.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression-list"
+        }
+      ]
+    },
+    "call": {
+      "name": "meta.call.lay",
+      "begin": "(\\.)?([_[:alpha:]][_[:alnum:]]*)\\s*\\(",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.accessor.get.lay"
+        },
+        "2": {
+          "name": "entity.name.function.lay"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "1": {
+          "name": "meta.brace.round.lay"
         }
       },
       "patterns": [
@@ -541,6 +681,49 @@
           "include": "#expression-list"
         }
       ]
+    },
+    "call-signature": {
+      "name": "meta.declaration.callSignature.lay",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": "punctuation.section.parens.begin.lay"
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": "punctuation.section.parens.end.lay"
+      },
+      "patterns": [
+        {
+          "include": "#parameter-typed"
+        },
+        {
+          "include": "#parameter"
+        },
+        {
+          "include": "#punctuation-comma"
+        }
+      ]
+    },
+    "parameter-typed": {
+      "begin": "([_[:alpha:]][_[:alnum:]]*)\\s*(:)\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "variable.parameter.lay"
+        },
+        "2": {
+          "name": "punctuation.separator.colon.lay"
+        }
+      },
+      "end": "(?=(,|\\)|\\|))",
+      "patterns": [
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "parameter": {
+      "name": "variable.parameter.lay",
+      "match": "[_[:alpha:]][_[:alnum:]]*"
     },
     "arguments": {
       "name": "meta.arguments",
@@ -588,11 +771,11 @@
       ]
     },
     "identifier-accessor": {
-      "name": "variable.other.accessor.ly",
+      "name": "variable.other.accessor.lay",
       "match": "(\\.)([_[:alpha:]][_[:alnum:]]*)",
       "captures": {
         "1": {
-          "name": "punctuation.accessor.get.ly"
+          "name": "punctuation.accessor.get.lay"
         },
         "2": {
           "name": "variable.other.member"
@@ -600,12 +783,22 @@
       }
     },
     "identifier": {
-      "name": "variable.other.identifier.ly",
+      "name": "variable.other.identifier.lay",
       "match": "\\b([_[:alpha:]][_[:alnum:]]*)"
     },
     "grouping": {
       "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.group.begin.lay"
+        }
+      },
       "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.group.end.lay"
+        }
+      },
       "patterns": [
         {
           "include": "#expression"
@@ -613,7 +806,7 @@
       ]
     },
     "lambda": {
-      "name": "meta.declaration.lambda.ly",
+      "name": "meta.declaration.lambda.lay",
       "begin": "\\|",
       "end": "\\|",
       "patterns": [
@@ -636,17 +829,17 @@
       ]
     },
     "string-single": {
-      "name": "string.ly",
+      "name": "string.lay",
       "begin": "'",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.definition.string.begin.ly"
+          "name": "punctuation.definition.string.begin.lay"
         }
       },
       "end": "'",
       "endCaptures": {
         "0": {
-          "name": "punctuation.definition.string.end.ly"
+          "name": "punctuation.definition.string.end.lay"
         }
       },
       "patterns": [
@@ -655,21 +848,24 @@
         },
         {
           "include": "#escape-sequence"
+        },
+        {
+          "include": "#template-expression"
         }
       ]
     },
     "string-double": {
-      "name": "string.ly",
+      "name": "string.lay",
       "begin": "\"",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.definition.string.begin.ly"
+          "name": "punctuation.definition.string.begin.lay"
         }
       },
       "end": "\"",
       "endCaptures": {
         "0": {
-          "name": "punctuation.definition.string.end.ly"
+          "name": "punctuation.definition.string.end.lay"
         }
       },
       "patterns": [
@@ -678,6 +874,29 @@
         },
         {
           "include": "#escape-sequence"
+        },
+        {
+          "include": "#template-expression"
+        }
+      ]
+    },
+    "template-expression": {
+      "name": "meta.template.expression.lay",
+      "begin": "\\$\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.template-expression.begin.lay"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.template-expression.begin.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
         }
       ]
     },
@@ -698,62 +917,236 @@
       }
     },
     "comment": {
-      "name": "comment.line.double-slash.ly",
+      "name": "comment.line.double-slash.lay",
       "begin": "(^[ \\t]+)?(//)",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.whitespace.comment.leading.ly"
+          "name": "punctuation.whitespace.comment.leading.lay"
         },
         "2": {
-          "name": "comment.line.double-slash.ly"
+          "name": "comment.line.double-slash.lay"
         }
       },
-      "contentName": "comment.line.comment.ly",
+      "contentName": "comment.line.comment.lay",
       "end": "\\n"
     },
     "number": {
-      "name": "constant.numeric.float.ly",
+      "name": "constant.numeric.float.lay",
       "match": "-?(?:0|[1-9](?:[0-9_]*[0-9])?)(?:\\.[0-9](?:[0-9_]*[0-9])?)?(?:[eE][+\\-]?[0-9](?:[0-9_]*[0-9])?)?"
     },
     "self": {
-      "name": "variable.language.self.ly",
+      "name": "variable.language.self.lay",
       "match": "\\bself(?![_[:alnum:]\\:])"
     },
     "super": {
-      "name": "variable.language.super.ly",
+      "name": "variable.language.super.lay",
       "match": "\\bsuper(?![_[:alnum:]\\:])"
     },
     "true": {
-      "name": "constant.language.true.ly",
+      "name": "constant.language.true.lay",
       "match": "\\btrue(?![_[:alnum:]\\:])"
     },
     "false": {
-      "name": "constant.language.false.ly",
+      "name": "constant.language.false.lay",
       "match": "\\bfalse(?![_[:alnum:]\\:])"
     },
     "nil": {
-      "name": "constant.language.nil.ly",
+      "name": "constant.language.nil.lay",
       "match": "\\bnil(?![_[:alnum:]\\:])"
     },
     "white-space": {
-      "name": "punctuation.separator.whitespace.ly",
+      "name": "punctuation.separator.whitespace.lay",
       "match": "\\s"
     },
     "punctuation-pipe": {
-      "name": "punctuation.lambda.pipe.ly",
+      "name": "punctuation.lambda.pipe.lay",
       "match": "\\|"
     },
     "punctuation-comma": {
-      "name": "punctuation.separator.comma.ly",
+      "name": "punctuation.separator.comma.lay",
       "match": "\\,"
     },
+    "punctuation-arrow": {
+      "name": "storage.type.function.arrow.lay",
+      "match": "->"
+    },
     "punctuation-period": {
-      "name": "punctuation.accessor.period.ly",
+      "name": "punctuation.accessor.period.lay",
       "match": "\\,"
     },
     "punctuation-semicolon": {
-      "name": "punctuation.terminator.statement.ly",
+      "name": "punctuation.terminator.statement.lay",
       "match": "\\;"
+    },
+    "punctuation-colon": {
+      "name": "punctuation.separator.colon.lay",
+      "match": ":"
+    },
+    "punctuation-assignment": {
+      "name": "keyword.operator.assignment.lay",
+      "match": "="
+    },
+    "type-member": {
+      "begin": "\\b([_[:alpha:]][_[:alnum:]]*)\\s*(:)\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "variable.other.member.lay"
+        },
+        "2": {
+          "name": "punctuation.separator.lay"
+        }
+      },
+      "end": ";",
+      "patterns": [
+        {
+          "include": "#type"
+        }
+      ]
+    },
+
+    "type-method": {
+      "begin": "\\b([_[:alpha:]][_[:alnum:]]*)\\s*(?=(<|\\())",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.lay"
+        }
+      },
+      "end": ";",
+      "patterns": [
+        {
+          "include": "#type-parameters"
+        },
+        {
+          "include": "#call-signature"
+        },
+        {
+          "include": "#punctuation-arrow"
+        },
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "type-parameters": {
+      "name": "meta.generic.lay",
+      "begin": "<",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.generic.begin.lay"
+        }
+      },
+      "end": ">",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.generic.end.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "include": "#type-parameter"
+        },
+        {
+          "include": "#white-space"
+        }
+      ]
+    },
+    "type-arguments": {
+      "name": "meta.generic.lay",
+      "begin": "<",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.generic.begin.lay"
+        }
+      },
+      "end": ">",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.generic.end.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "include": "#type"
+        },
+        {
+          "include": "#white-space"
+        }
+      ]
+    },
+    "type-parameter": {
+      "name": "meta.type.parameter",
+      "begin": "\\b([_[:alpha:]][_[:alnum:]]*)(?:\\s*:\\s*)?",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.type.parameter.lay"
+        }
+      },
+      "end": "(?=(,|>))",
+      "patterns": [
+        {
+          "include": "#type"
+        }
+      ]
+    },
+    "type": {
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#type-operators"
+        },
+        {
+          "include": "#punctuation-arrow"
+        },
+        {
+          "include": "#type-arguments"
+        },
+        {
+          "include": "#call-signature"
+        },
+        {
+          "include": "#type-predefined"
+        },
+        {
+          "include": "#type-ref"
+        },
+        {
+          "include": "#white-space"
+        }
+      ]
+    },
+    "type-operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.union.lay",
+          "match": "\\|"
+        },
+        {
+          "name": "keyword.operator.intersection.lay",
+          "match": "&"
+        }
+      ]
+    },
+    "type-ref": {
+      "name": "entity.name.type.ref.lay",
+      "match": "\\b([_[:alpha:]][_[:alnum:]]*)"
+    },
+    "type-predefined": {
+      "name": "entity.name.type.predefined.lay",
+      "match": "\\b(nil|number|bool|string|any)(?![_[:alnum:]\\:])"
     }
   }
 }
