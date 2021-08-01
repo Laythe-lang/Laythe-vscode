@@ -302,6 +302,9 @@
           "include": "#control-statement"
         },
         {
+          "include": "#launch"
+        },
+        {
           "include": "#block"
         },
         {
@@ -416,9 +419,9 @@
     },
     "if": {
       "name": "meta.condition.if.lay",
-      "begin": "\\bif\\s*",
+      "begin": "\\b(if)\\s*",
       "beginCaptures": {
-        "0": {
+        "1": {
           "name": "keyword.control.condition.if.lay"
         }
       },
@@ -434,9 +437,9 @@
     },
     "else": {
       "name": "meta.condition.else.lay",
-      "begin": "\\belse\\s*",
+      "begin": "\\b(else)\\s*",
       "beginCaptures": {
-        "0": {
+        "1": {
           "name": "keyword.control.condition.else.lay"
         }
       },
@@ -518,6 +521,26 @@
         }
       }
     },
+    "launch": {
+      "name": "meta.launch.lay",
+      "begin": "\\b(launch)\\s+",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.launch.lay"
+        }
+      },
+      "end": "\\;",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.terminator.statement.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
     "block": {
       "name": "meta.block.lay",
       "begin": "\\{",
@@ -590,6 +613,10 @@
         {
           "name": "keyword.operator.comparison.lay",
           "match": "<=|>=|<|>|!=|=="
+        },
+        {
+          "name": "keyword.operator.channel.lay",
+          "match": "<-"
         },
         {
           "name": "keyword.operator.arithmetic.lay",
