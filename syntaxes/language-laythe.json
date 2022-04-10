@@ -319,7 +319,8 @@
       ]
     },
     "import": {
-      "begin": "\\bimport\\s+",
+      "name": "meta.import.lay",
+      "begin": "\\bimport\\b",
       "beginCaptures": {
         "0": {
           "name": "keyword.control.import.lay"
@@ -327,22 +328,68 @@
       },
       "end": ";",
       "endCaptures": {
-        "1": {
+        "0": {
           "name": "punctuation.terminator.statement.lay"
         }
       },
       "patterns": [
         {
-          "include": "#string"
+          "include": "#import-rename"
         },
         {
-          "include": "#from"
+          "include": "#module-symbols"
+        },
+        {
+          "include": "#module-accessor"
+        },
+        {
+          "include": "#module"
         }
       ]
     },
-    "from": {
-      "name": "keyword.control.import.lay",
-      "match": "(?<![_[:alnum:]\\:])(from)(?![_[:alnum:]\\:])"
+    "module": {
+      "name": "variable.other.identifier.lay",
+      "match": "([_[:alpha:]][_[:alnum:]]*)"
+    },
+    "module-accessor": {
+      "name": "entity.module.accessor.lay",
+      "match": "([_[:alpha:]][_[:alnum:]]*)(\\.)",
+      "captures": {
+        "1": {
+          "name": "entity.module.lay"
+        },
+        "2": {
+          "name": "punctuation.accessor.get.lay"
+        }
+      }
+    },
+    "module-symbols": {
+      "name": "meta.import.symbols.lay",
+      "begin": "([_[:alpha:]][_[:alnum:]]*):\\{",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.module.lay"
+        }
+      },
+      "end": "\\}",
+      "patterns": [
+        {
+          "include": "#import-rename"
+        },
+        {
+          "include": "#identifier"
+        },
+        {
+          "include": "#punctuation-comma"
+        },
+        {
+          "include": "#white-space"
+        }
+      ]
+    },
+    "import-rename": {
+      "name": "keyword.other.import.lay",
+      "match": "(?<![_[:alnum:]\\:])(as)(?![_[:alnum:]\\:])"
     },
     "control-statement": {
       "patterns": [
@@ -485,7 +532,7 @@
     },
     "return": {
       "name": "meta.return.lay",
-      "begin": "(?<![_[:alnum:]\\:])(return)\\s*",
+      "begin": "(?<![_[:alnum:]\\:])(return)(?![_[:alnum:]\\:])",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.return.lay"
