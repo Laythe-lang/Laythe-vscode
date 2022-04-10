@@ -485,7 +485,7 @@
     },
     "return": {
       "name": "meta.return.lay",
-      "begin": "(?<![_[:alnum:]\\:])(return)\\s*",
+      "begin": "(?<![_[:alnum:]\\:])(return)(?![_[:alnum:]\\:])",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.return.lay"
