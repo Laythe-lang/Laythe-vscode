@@ -305,6 +305,9 @@
           "include": "#launch"
         },
         {
+          "include": "#raise"
+        },
+        {
           "include": "#block"
         },
         {
@@ -574,6 +577,26 @@
       "beginCaptures": {
         "1": {
           "name": "keyword.control.launch.lay"
+        }
+      },
+      "end": "\\;",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.terminator.statement.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "raise": {
+      "name": "meta.raise.lay",
+      "begin": "\\b(raise)\\s+",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.raise.lay"
         }
       },
       "end": "\\;",
