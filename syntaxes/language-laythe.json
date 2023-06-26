@@ -274,7 +274,7 @@
           "name": "keyword.declaration.type.lay"
         },
         "3": {
-          "name": "entity.name.type"
+          "name": "entity.name.type.lay"
         }
       },
       "end": ";",
@@ -303,9 +303,6 @@
         },
         {
           "include": "#launch"
-        },
-        {
-          "include": "#raise"
         },
         {
           "include": "#block"
@@ -416,6 +413,9 @@
         },
         {
           "include": "#return"
+        },
+        {
+          "include": "#raise"
         },
         {
           "include": "#break"
@@ -529,6 +529,12 @@
       "end": "(?<=\\})",
       "patterns": [
         {
+          "include": "#expression"
+        },
+        {
+          "include": "punctuation-semicolon"
+        },
+        {
           "include": "#block"
         }
       ]
@@ -539,6 +545,26 @@
       "beginCaptures": {
         "1": {
           "name": "keyword.control.return.lay"
+        }
+      },
+      "end": ";",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.terminator.statement.lay"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "raise": {
+      "name": "meta.raise.lay",
+      "begin": "(?<![_[:alnum:]\\:])(raise)(?![_[:alnum:]\\:])",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.raise.lay"
         }
       },
       "end": ";",
@@ -577,26 +603,6 @@
       "beginCaptures": {
         "1": {
           "name": "keyword.control.launch.lay"
-        }
-      },
-      "end": "\\;",
-      "endCaptures": {
-        "0": {
-          "name": "punctuation.terminator.statement.lay"
-        }
-      },
-      "patterns": [
-        {
-          "include": "#expression"
-        }
-      ]
-    },
-    "raise": {
-      "name": "meta.raise.lay",
-      "begin": "\\b(raise)\\s+",
-      "beginCaptures": {
-        "1": {
-          "name": "keyword.control.raise.lay"
         }
       },
       "end": "\\;",
@@ -759,6 +765,9 @@
           "include": "#literal"
         },
         {
+          "include": "#identifier-entity"
+        },
+        {
           "include": "#identifier"
         },
         {
@@ -878,6 +887,10 @@
           "name": "variable.other.member"
         }
       }
+    },
+    "identifier-entity": {
+      "name": "entity.name.type.lay",
+      "match": "\\b([_[:upper:]][_[:alnum:]]*)"
     },
     "identifier": {
       "name": "variable.other.identifier.lay",
