@@ -17,7 +17,7 @@
     "color": "#004d99",
     "theme": "dark"
   },
-  "version": "0.0.19",
+  "version": "0.0.20",
   "engines": {
     "vscode": "^1.46.0"
   },
@@ -55,9 +55,9 @@
   "homepage": "https://github.com/Laythe-lang/Laythe#readme",
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "npx tsc -p ./",
     "lint": "eslint src --ext ts",
-    "watch": "tsc -watch -p ./",
+    "watch": "npx tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "test": "node ./out/test/runTest.js"
   },

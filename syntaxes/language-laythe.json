@@ -529,7 +529,10 @@
       "end": "(?<=\\})",
       "patterns": [
         {
-          "include": "#expression"
+          "include": "#identifier-entity"
+        },
+        {
+          "include": "#identifier"
         },
         {
           "include": "punctuation-semicolon"
@@ -675,8 +678,8 @@
     "expression-operators": {
       "patterns": [
         {
-          "name": "keyword.other.logical.lay",
-          "match": "\\b(or|and)\\b"
+          "name": "keyword.operator.logical.lay",
+          "match": "(\\|\\||&&)"
         },
         {
           "name": "keyword.operator.assignment.lay",
